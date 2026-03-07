@@ -76,6 +76,14 @@ margin-top:20px;
 
 <div id="webcam-container"></div>
 
+<br>
+
+<button onclick="capture()">Capture Snapshot</button>
+
+<br><br>
+
+<canvas id="snapshot" width="400" height="400"></canvas>
+
 <div id="label-container">Prediction will appear here</div>
 
 <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
@@ -134,6 +142,15 @@ let percent = (highest.probability * 100).toFixed(1);
 
 document.getElementById("label-container").innerHTML =
 "Prediction: " + highest.className + " (" + percent + "%)";
+
+  function capture(){
+
+const canvas = document.getElementById("snapshot");
+const context = canvas.getContext("2d");
+
+context.drawImage(webcam.canvas, 0, 0, 400, 400);
+
+}
 
 }
 
