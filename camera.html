@@ -188,30 +188,36 @@ async function predict(){
 
 const prediction = await model.predict(webcam.canvas);
 
-let output = "";
+let cat = 0;
+let seal = 0;
 
 for (let i = 0; i < prediction.length; i++) {
 
 let percent = (prediction[i].probability * 100).toFixed(1);
 
-let emoji = "";
-
 if(prediction[i].className.toLowerCase().includes("cat")){
-emoji = "🐱";
+cat = percent;
 }
 
-else if(prediction[i].className.toLowerCase().includes("seal")){
-emoji = "🦭";
+if(prediction[i].className.toLowerCase().includes("seal")){
+seal = percent;
 }
 
-output += emoji + " " + prediction[i].className + ": " + percent + "%<br><br>";
-
 }
 
+// update text
 document.getElementById("label-container").innerHTML =
 "<span style='color:#ff69b4'>🐱 Cat</span>: " + cat + "%<br><br>" +
 "<span style='color:#00bfb3'>🦭 Seal</span>: " + seal + "%";
-  
+
+// change background color
+if(cat > seal){
+document.body.style.background = "#ffd6ec"; // pink
+}
+else{
+document.body.style.background = "#a8f0e6"; // turquoise
+}
+
 }
 
 function capture(){
