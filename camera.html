@@ -50,27 +50,18 @@ alert("Camera permission denied");
 <html>
 <head>
 
-<title>Animal Detector</title>
+<title>Seal vs Cat Detector</title>
 
 <style>
 
 body{
-font-family:Arial;
-text-align:center;
-}
-
-#webcam-container{
-margin-top:20px;
+font-family: Arial;
+text-align: center;
 }
 
 #label-container{
-font-size:25px;
+font-size:30px;
 margin-top:20px;
-}
-
-button{
-padding:10px 20px;
-font-size:18px;
 }
 
 </style>
@@ -79,21 +70,22 @@ font-size:18px;
 
 <body>
 
-<h1>Seal vs Cat Detector</h1>
+<h1>Seal vs Cat AI Detector</h1>
 
 <button onclick="init()">Start Camera</button>
 
 <div id="webcam-container"></div>
-<div id="label-container"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<div id="label-container">Prediction will appear here</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest"></script>
 
 <script>
 
 const URL = "./model/";
 
-let model, webcam, labelContainer, maxPredictions;
+let model, webcam;
 
 async function init() {
 
@@ -101,9 +93,9 @@ const modelURL = URL + "model.json";
 const metadataURL = URL + "metadata.json";
 
 model = await tmImage.load(modelURL, metadataURL);
-maxPredictions = model.getTotalClasses();
 
-webcam = new tmImage.Webcam(400, 400, true);
+webcam = new tmImage.Webcam(400,400,true);
+
 await webcam.setup();
 await webcam.play();
 
@@ -111,34 +103,37 @@ window.requestAnimationFrame(loop);
 
 document.getElementById("webcam-container").appendChild(webcam.canvas);
 
-labelContainer = document.getElementById("label-container");
-
-for (let i = 0; i < maxPredictions; i++) {
-labelContainer.appendChild(document.createElement("div"));
 }
 
-}
-
-async function loop() {
+async function loop(){
 
 webcam.update();
 await predict();
+
 window.requestAnimationFrame(loop);
 
 }
 
-async function predict() {
+async function predict(){
 
 const prediction = await model.predict(webcam.canvas);
 
-for (let i = 0; i < maxPredictions; i++) {
+let highest = prediction[0];
 
-const classPrediction =
-prediction[i].className + ": " + (prediction[i].probability * 100).toFixed(1) + "%";
+for (let i = 1; i < prediction.length; i++){
 
-labelContainer.childNodes[i].innerHTML = classPrediction;
+if(prediction[i].probability > highest.probability){
+
+highest = prediction[i];
 
 }
+
+}
+
+let percent = (highest.probability * 100).toFixed(1);
+
+document.getElementById("label-container").innerHTML =
+"Prediction: " + highest.className + " (" + percent + "%)";
 
 }
 
