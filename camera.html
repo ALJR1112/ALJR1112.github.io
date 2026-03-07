@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Camera</title>
+
+<style>
+
+body{
+font-family:Arial;
+text-align:center;
+}
+
+video{
+width:500px;
+border:3px solid black;
+margin-top:40px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>Camera</h1>
+
+<video id="camera" autoplay></video>
+
+<script>
+
+const video = document.getElementById("camera");
+
+navigator.mediaDevices.getUserMedia({video:true})
+.then(stream=>{
+video.srcObject = stream;
+})
+.catch(()=>{
+alert("Camera permission denied");
+});
+
+</script>
+
+</body>
+
+</html>
