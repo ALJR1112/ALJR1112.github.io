@@ -64,6 +64,17 @@ font-size:30px;
 margin-top:20px;
 }
 
+canvas{
+margin-top:20px;
+border:2px solid black;
+}
+
+button{
+padding:10px 20px;
+font-size:18px;
+margin:10px;
+}
+
 </style>
 
 </head>
@@ -76,11 +87,9 @@ margin-top:20px;
 
 <div id="webcam-container"></div>
 
-<br>
-
 <button onclick="capture()">Capture Snapshot</button>
 
-<br><br>
+<br>
 
 <canvas id="snapshot" width="400" height="400"></canvas>
 
@@ -143,14 +152,14 @@ let percent = (highest.probability * 100).toFixed(1);
 document.getElementById("label-container").innerHTML =
 "Prediction: " + highest.className + " (" + percent + "%)";
 
-  function capture(){
+}
+
+function capture(){
 
 const canvas = document.getElementById("snapshot");
 const context = canvas.getContext("2d");
 
 context.drawImage(webcam.canvas, 0, 0, 400, 400);
-
-}
 
 }
 
