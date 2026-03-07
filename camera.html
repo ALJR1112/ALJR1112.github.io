@@ -55,33 +55,86 @@ alert("Camera permission denied");
 <style>
 
 body{
-font-family: Arial;
+font-family: Arial, sans-serif;
 text-align: center;
+background: linear-gradient(135deg,#a8f0e6,#ffd6ec);
+margin:0;
+padding:40px;
+}
+
+h1{
+font-size:42px;
+color:#333;
+}
+
+button{
+background:#ff8ac9;
+color:white;
+border:none;
+padding:12px 25px;
+font-size:18px;
+border-radius:25px;
+cursor:pointer;
+transition:transform 0.2s;
+margin:10px;
+}
+
+button:hover{
+transform:scale(1.08);
+background:#00c9b7;
 }
 
 #label-container{
-font-size:30px;
+font-size:32px;
 margin-top:20px;
+font-weight:bold;
 }
 
 canvas{
 margin-top:20px;
-border:2px solid black;
+border-radius:15px;
+box-shadow:0px 6px 20px rgba(0,0,0,0.2);
 }
 
-button{
-padding:10px 20px;
-font-size:18px;
-margin:10px;
+.animals{
+font-size:60px;
+margin:20px;
+}
+
+.cat{
+display:inline-block;
+animation: floatCat 3s ease-in-out infinite;
+}
+
+.seal{
+display:inline-block;
+animation: floatSeal 3s ease-in-out infinite;
+}
+
+@keyframes floatCat{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
+}
+
+@keyframes floatSeal{
+0%{transform:translateY(0);}
+50%{transform:translateY(-10px);}
+100%{transform:translateY(0);}
 }
 
 </style>
-
+  
 </head>
 
 <body>
 
 <h1>Seal vs Cat AI Detector</h1>
+
+<div class="animals">
+<span class="cat">🐱</span>
+<span class="seal">🦭</span>
+</div>
 
 <button onclick="init()">Start Camera</button>
 
@@ -155,8 +208,10 @@ output += emoji + " " + prediction[i].className + ": " + percent + "%<br><br>";
 
 }
 
-document.getElementById("label-container").innerHTML = output;
-
+document.getElementById("label-container").innerHTML =
+"<span style='color:#ff69b4'>🐱 Cat</span>: " + cat + "%<br><br>" +
+"<span style='color:#00bfb3'>🦭 Seal</span>: " + seal + "%";
+  
 }
 
 function capture(){
