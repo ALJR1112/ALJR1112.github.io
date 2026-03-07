@@ -130,18 +130,27 @@ await predict();
 window.requestAnimationFrame(loop);
 
 }
-
 async function predict(){
 
 const prediction = await model.predict(webcam.canvas);
 
-let highest = prediction[0];
+let cat = 0;
+let seal = 0;
 
-for (let i = 1; i < prediction.length; i++){
+for (let i = 0; i < prediction.length; i++) {
 
-if(prediction[i].probability > highest.probability){
+if(prediction[i].className.toLowerCase().includes("cat")){
+cat = (prediction[i].probability * 100).toFixed(1);
+}
 
-highest = prediction[i];
+if(prediction[i].className.toLowerCase().includes("seal")){
+seal = (prediction[i].probability * 100).toFixed(1);
+}
+
+}
+
+document.getElementById("label-container").innerHTML =
+"🐱 Cat: " + cat + "%<br><br>🦭 Seal: " + seal + "%";
 
 }
 
